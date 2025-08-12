@@ -99,6 +99,30 @@ class S3Client:
             logger.error(f"Unexpected error generating presigned URL for {key}: {e}")
             return None
 
+    def download_fileobj(self, key):
+        """Download file content from S3 and return as bytes"""
+        if not self.client:
+            logger.error("S3 client not initialized")
+            return None
+            
+        try:
+            logger.info(f"Downloading file from S3: {key}")
+            from io import BytesIO
+            file_obj = BytesIO()
+            self.client.download_fileobj(self.bucket_name, key, file_obj)
+            file_content = file_obj.getvalue()
+            logger.info(f"Successfully downloaded file from S3: {key}, size: {len(file_content)} bytes")
+            return file_content
+        except NoCredentialsError:
+            logger.error("AWS credentials not found")
+            return None
+        except ClientError as e:
+            logger.error(f"S3 download failed for {key}: {e}")
+            return None
+        except Exception as e:
+            logger.error(f"Unexpected error downloading {key}: {e}")
+            return None
+
     def delete_object(self, key):
         if not self.client:
             logger.error("S3 client not initialized")
