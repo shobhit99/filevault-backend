@@ -171,6 +171,9 @@ class FileUploadView(APIView):
         thumbnail_s3_key = None
         if thumbnail_obj:
             thumbnail_s3_key = f"thumb_{file_hash}.jpg"
+        
+        # Reset file pointer after thumbnail generation
+        file_obj.seek(0)
 
         # Deduplication check
         stored_file, created = StoredFile.objects.get_or_create(
