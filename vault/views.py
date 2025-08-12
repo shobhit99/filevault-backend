@@ -292,6 +292,20 @@ class FileListView(generics.ListAPIView):
         if ordering in ['name', '-name', 'created_at', '-created_at']:
             files_queryset = files_queryset.order_by(ordering)
             folders_queryset = folders_queryset.order_by(ordering)
+        elif ordering == 'size':
+            # For size ordering, we need to order by the related StoredFile's size
+            files_queryset = files_queryset.order_by('stored_file__size')
+            # Folders don't have size, so we'll keep them at the top
+            folders_queryset = folders_queryset.order_by('name')
+        elif ordering == '-size':
+            # For descending size ordering
+            files_queryset = files_queryset.order_by('-stored_file__size')
+            # Folders don't have size, so we'll keep them at the top
+            folders_queryset = folders_queryset.order_by('name')
+        else:
+            # Default ordering by name if no valid ordering is provided
+            files_queryset = files_queryset.order_by('name')
+            folders_queryset = folders_queryset.order_by('name')
         
         # Combine and serialize
         files_data = self.get_serializer(files_queryset, many=True).data
