@@ -150,37 +150,22 @@ AWS_DEFAULT_ACL = None
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
+    "https://filevault-frontend-production.up.railway.app"
 ]
 
 CORS_ALLOW_CREDENTIALS = True
 
-# For cross-origin cookie sharing in development, we need to be more permissive
-# Session settings for cross-origin requests
-SESSION_COOKIE_SAMESITE = None  # None allows cross-origin cookies (requires Secure in production)
-SESSION_COOKIE_SECURE = False  # Must be False for HTTP development
-SESSION_COOKIE_HTTPONLY = False  # Allow JavaScript access for debugging
-SESSION_COOKIE_AGE = 86400  # 24 hours
-SESSION_COOKIE_DOMAIN = None  # Don't set domain
-SESSION_COOKIE_NAME = 'sessionid'  # Explicit session cookie name
-
-# CSRF settings
-CSRF_COOKIE_SAMESITE = None  # None allows cross-origin cookies
-CSRF_COOKIE_SECURE = False  # Must be False for HTTP development
-CSRF_COOKIE_HTTPONLY = False  # Allow JavaScript access
-CSRF_COOKIE_NAME = 'csrftoken'  # Explicit CSRF cookie name
-CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:3000",
-    "http://127.0.0.1:3000",
+# Allow all methods
+CORS_ALLOW_METHODS = [
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
 ]
 
-# Additional CORS settings for development
-CORS_ALLOW_ALL_ORIGINS = False  # Keep this False for security
-CORS_ALLOWED_ORIGIN_REGEXES = [
-    r"^http://localhost:\d+$",
-    r"^http://127\.0\.0\.1:\d+$",
-]
-
-# Ensure cookies are sent in cross-origin requests
+# Allow all headers
 CORS_ALLOW_HEADERS = [
     'accept',
     'accept-encoding',
@@ -191,6 +176,11 @@ CORS_ALLOW_HEADERS = [
     'user-agent',
     'x-csrftoken',
     'x-requested-with',
+    'cache-control',
+    'pragma',
+    'expires',
+    'x-forwarded-for',
+    'x-forwarded-proto',
 ]
 
 # Custom user model
